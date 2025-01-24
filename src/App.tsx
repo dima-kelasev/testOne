@@ -9,15 +9,7 @@ const AppContent = () => {
 
   if (isLoading) {
     return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-          width: '100vw',
-        }}
-      >
+      <div className="spinStyle">
         <Spin size="large" />
       </div>
     );
