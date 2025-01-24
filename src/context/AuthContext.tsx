@@ -6,6 +6,7 @@ import {
   useEffect,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
+import LocalStorageService from '../services/local-storage-service';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -30,25 +31,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    const token = LocalStorageService.getAuthToken();
     setIsAuthenticated(!!token);
     setTimeout(() => setIsLoading(false), 1000);
   }, []);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const login = (email: string, password: string): boolean => {
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = users.find((u: { email: string }) => u.email === email);
+    const user = LocalStorageService.findUserByEmail(email);
 
     if (!user) return false;
 
-    localStorage.setItem('authToken', 'mockToken123');
+    LocalStorageService.setAuthToken('mockToken123');
     setIsAuthenticated(true);
     return true;
   };
 
   const logout = () => {
-    localStorage.removeItem('authToken');
+    LocalStorageService.removeAuthToken();
     setIsAuthenticated(false);
     navigate('/login');
   };

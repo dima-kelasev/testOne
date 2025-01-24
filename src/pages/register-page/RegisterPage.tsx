@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { formValidationSchema } from '../../helpers/validationSchemas';
 import bcrypt from 'bcryptjs';
 import style from './register-page.module.css';
+import LocalStorageService from '../../services/local-storage-service';
 
 const { Text } = Typography;
 
@@ -15,18 +16,15 @@ const RegisterPage = () => {
     values: { email: string; password: string },
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-
-    if (users.find((u: { email: string }) => u.email === values.email)) {
+    if (LocalStorageService.findUserByEmail(values.email)) {
       message.error('Пользователь с таким email уже зарегистрирован');
       setSubmitting(false);
       return;
     }
 
     const hashedPassword = await bcrypt.hash(values.password, 10);
-    users.push({ email: values.email, password: hashedPassword });
+    LocalStorageService.addUser(values.email, hashedPassword);
 
-    localStorage.setItem('users', JSON.stringify(users));
     message.success('Регистрация успешна! Теперь войдите в систему.');
     navigate('/login');
   };

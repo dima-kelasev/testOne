@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import { formValidationSchema } from '../../helpers/validationSchemas';
 import bcrypt from 'bcryptjs';
 import style from './login-page.module.css';
+import LocalStorageService from '../../services/local-storage-service';
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -17,8 +18,7 @@ const LoginPage = () => {
       setFieldError,
     }: FormikHelpers<{ email: string; password: string }>
   ) => {
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = users.find((u: { email: string }) => u.email === values.email);
+    const user = LocalStorageService.findUserByEmail(values.email);
 
     if (!user) {
       setFieldError('email', 'Пользователь не найден');
@@ -37,7 +37,12 @@ const LoginPage = () => {
     }
 
     const success = login(values.email, values.password);
-    if (success) navigate('/dashboard'); // ✅ Теперь редиректим ТОЛЬКО при успешном входе
+    if (success) {
+      LocalStorageService.setAuthToken('mockToken123');
+      navigate('/dashboard');
+    } else {
+      setFieldError('password', 'Ошибка входа, попробуйте снова.');
+    }
 
     setSubmitting(false);
   };
