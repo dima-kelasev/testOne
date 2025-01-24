@@ -1,34 +1,41 @@
-import { Card, Button, Input, Typography } from 'antd';
+import { Card, Button, Input, Typography, message } from 'antd';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const { Text } = Typography;
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Некорректный email').required('Введите email'),
-  password: Yup.string()
-    .min(6, 'Минимум 6 символов')
-    .required('Введите пароль'),
 });
 
-const LoginPage = () => {
-  const { login } = useAuth();
+const ResetPassword = () => {
   const navigate = useNavigate();
 
   const onSubmit = (
-    values: { email: string; password: string },
+    values: { email: string },
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
-    const success = login(values.email, values.password);
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find((u: { email: string }) => u.email === values.email);
 
-    if (!success) {
+    if (!user) {
+      message.error('Пользователь с таким email не найден');
       setSubmitting(false);
       return;
     }
 
-    navigate('/dashboard');
+    const resetToken = Math.random().toString(36).substr(2);
+    localStorage.setItem(
+      'resetToken',
+      JSON.stringify({ email: values.email, token: resetToken })
+    );
+
+    message.success(`Ссылка для сброса пароля создана!`);
+
+    setTimeout(() => {
+      navigate(`/set-new-password/${resetToken}`);
+    }, 2000);
   };
 
   return (
@@ -41,9 +48,9 @@ const LoginPage = () => {
         width: '100vw',
       }}
     >
-      <Card title="Вход в систему" style={{ width: 350, textAlign: 'center' }}>
+      <Card title="Сброс пароля" style={{ width: 350, textAlign: 'center' }}>
         <Formik
-          initialValues={{ email: '', password: '' }}
+          initialValues={{ email: '' }}
           validationSchema={validationSchema}
           onSubmit={onSubmit}
         >
@@ -59,16 +66,6 @@ const LoginPage = () => {
                 />
               </div>
 
-              <div style={{ marginBottom: 10 }}>
-                <label>Пароль</label>
-                <Field as={Input.Password} name="password" />
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="error-message"
-                />
-              </div>
-
               <Button
                 type="primary"
                 htmlType="submit"
@@ -76,21 +73,18 @@ const LoginPage = () => {
                 disabled={isSubmitting}
                 style={{ marginTop: 10 }}
               >
-                Войти
+                Сбросить пароль
               </Button>
 
               <div style={{ marginTop: 15 }}>
-                <Text type="secondary">Еще не зарегистрированы?</Text>
+                <Text
+                  type="secondary"
+                  onClick={() => navigate('/login')}
+                  style={{ cursor: 'pointer' }}
+                >
+                  Вернуться ко входу
+                </Text>
               </div>
-
-              <Button
-                type="default"
-                block
-                onClick={() => navigate('/register')}
-                style={{ marginTop: 5 }}
-              >
-                Зарегистрироваться
-              </Button>
             </Form>
           )}
         </Formik>
@@ -99,4 +93,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default ResetPassword;
