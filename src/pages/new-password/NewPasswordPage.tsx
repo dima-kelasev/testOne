@@ -2,6 +2,7 @@ import { Card, Button, Input, Typography, message } from 'antd';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useNavigate, useParams } from 'react-router-dom';
 import { setNewPasswordValidationSchema } from '../../helpers/validationSchemas';
+import bcrypt from 'bcryptjs';
 import style from './new-password-page.module.css';
 
 const { Text } = Typography;
@@ -10,9 +11,7 @@ const NewPasswordPage = () => {
   const navigate = useNavigate();
   const { token } = useParams<{ token: string }>();
 
-  const goToLoginPage = () => navigate('/login');
-
-  const onSubmit = (
+  const onSubmit = async (
     values: { password: string },
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
@@ -25,10 +24,13 @@ const NewPasswordPage = () => {
     }
 
     const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+    const hashedPassword = await bcrypt.hash(values.password, 10);
+
     const updatedUsers = users.map(
       (user: { email: string; password: string }) =>
         user.email === resetData.email
-          ? { ...user, password: values.password }
+          ? { ...user, password: hashedPassword }
           : user
     );
 
@@ -36,10 +38,7 @@ const NewPasswordPage = () => {
     localStorage.removeItem('resetToken');
 
     message.success('Пароль успешно изменён!');
-
-    setTimeout(() => {
-      navigate('/login');
-    }, 2000);
+    setTimeout(() => navigate('/login'), 2000);
   };
 
   return (
@@ -72,13 +71,13 @@ const NewPasswordPage = () => {
                 disabled={isSubmitting}
                 style={{ marginTop: 10 }}
               >
-                Установить пароль
+                {isSubmitting ? 'Сохранение...' : 'Установить пароль'}
               </Button>
 
               <div style={{ marginTop: 15 }}>
                 <Text
                   type="secondary"
-                  onClick={goToLoginPage}
+                  onClick={() => navigate('/login')}
                   style={{ cursor: 'pointer' }}
                 >
                   Вернуться ко входу

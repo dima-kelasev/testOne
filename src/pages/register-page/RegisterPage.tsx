@@ -2,6 +2,7 @@ import { Card, Button, Input, Typography, message } from 'antd';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { formValidationSchema } from '../../helpers/validationSchemas';
+import bcrypt from 'bcryptjs';
 import style from './register-page.module.css';
 
 const { Text } = Typography;
@@ -10,8 +11,7 @@ const RegisterPage = () => {
   const navigate = useNavigate();
 
   const goToLoginPage = () => navigate('/login');
-
-  const onSubmit = (
+  const onSubmit = async (
     values: { email: string; password: string },
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
@@ -23,9 +23,10 @@ const RegisterPage = () => {
       return;
     }
 
-    users.push(values);
-    localStorage.setItem('users', JSON.stringify(users));
+    const hashedPassword = await bcrypt.hash(values.password, 10);
+    users.push({ email: values.email, password: hashedPassword });
 
+    localStorage.setItem('users', JSON.stringify(users));
     message.success('Регистрация успешна! Теперь войдите в систему.');
     navigate('/login');
   };
@@ -67,7 +68,7 @@ const RegisterPage = () => {
                 disabled={isSubmitting}
                 style={{ marginTop: 10 }}
               >
-                Зарегистрироваться
+                {isSubmitting ? 'Регистрация...' : 'Зарегистрироваться'}
               </Button>
 
               <div style={{ marginTop: 15 }}>

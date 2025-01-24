@@ -1,5 +1,5 @@
 import { BrowserRouter as Router } from 'react-router-dom';
-import AppRouter from './router';
+import AppRouter from './routes/router';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Spin } from 'antd';
 

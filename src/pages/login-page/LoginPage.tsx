@@ -2,29 +2,44 @@ import { Card, Button, Input } from 'antd';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import style from './login-page.module.css';
 import { formValidationSchema } from '../../helpers/validationSchemas';
+import bcrypt from 'bcryptjs';
+import style from './login-page.module.css';
 
 const LoginPage = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const onSubmit = (
+  const onSubmit = async (
     values: { email: string; password: string },
     {
       setSubmitting,
       setFieldError,
     }: FormikHelpers<{ email: string; password: string }>
   ) => {
-    const success = login(values.email, values.password);
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find((u: { email: string }) => u.email === values.email);
 
-    if (!success) {
+    if (!user) {
+      setFieldError('email', 'Пользователь не найден');
+      setSubmitting(false);
+      return;
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(
+      values.password,
+      user.password
+    );
+    if (!isPasswordCorrect) {
       setFieldError('password', 'Неверный email или пароль');
       setSubmitting(false);
       return;
     }
 
-    navigate('/dashboard');
+    const success = login(values.email, values.password);
+    if (success) navigate('/dashboard'); // ✅ Теперь редиректим ТОЛЬКО при успешном входе
+
+    setSubmitting(false);
   };
 
   return (

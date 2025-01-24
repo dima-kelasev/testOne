@@ -4,6 +4,7 @@ export const formValidationSchema = Yup.object({
   email: Yup.string().email('Некорректный email').required('Введите email'),
   password: Yup.string()
     .min(6, 'Минимум 6 символов')
+    .matches(/[0-9]/, 'Должен содержать хотя бы одну цифру')
     .required('Введите пароль'),
 });
 

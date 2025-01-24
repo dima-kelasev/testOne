@@ -1,25 +1,19 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './context/AuthContext';
-import LoginPage from './pages/login-page/LoginPage';
-import RegisterPage from './pages/register-page/RegisterPage';
-import ResetPassword from './pages/reset-password/ResetPassword';
-import Dashboard from './pages/dashboard/Dashboard';
+import { useAuth } from '../context/AuthContext';
+import LoginPage from '../pages/login-page/LoginPage';
+import RegisterPage from '../pages/register-page/RegisterPage';
+import ResetPassword from '../pages/reset-password/ResetPassword';
+import Dashboard from '../pages/dashboard/Dashboard';
 import { Spin } from 'antd';
-import NewPasswordPage from './pages/new-password/NewPasswordPage';
+import NewPasswordPage from '../pages/new-password/NewPasswordPage';
+import style from './index.module.css';
 
 const PrivateRoute = ({ element }: { element: JSX.Element }) => {
   const { isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
     return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-        }}
-      >
+      <div className={style.spinnerStyles}>
         <Spin size="large" />
       </div>
     );

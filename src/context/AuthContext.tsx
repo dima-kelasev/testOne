@@ -31,28 +31,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-
-    if (token) {
-      setIsAuthenticated(true);
-    }
-
-    setTimeout(() => setIsLoading(false), 1000); // Эмулируем задержку
+    setIsAuthenticated(!!token);
+    setTimeout(() => setIsLoading(false), 1000);
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const login = (email: string, password: string): boolean => {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = users.find(
-      (u: { email: string; password: string }) =>
-        u.email === email && u.password === password
-    );
+    const user = users.find((u: { email: string }) => u.email === email);
 
-    if (!user) {
-      return false;
-    }
+    if (!user) return false;
 
     localStorage.setItem('authToken', 'mockToken123');
     setIsAuthenticated(true);
-    navigate('/dashboard');
     return true;
   };
 
