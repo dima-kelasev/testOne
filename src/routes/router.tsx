@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hook/use-auth';
 import LoginPage from '../pages/login-page/LoginPage';
 import RegisterPage from '../pages/register-page/RegisterPage';
 import ResetPassword from '../pages/reset-password/ResetPassword';

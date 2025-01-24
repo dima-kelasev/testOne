@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Layout, Menu, Button } from 'antd';
-import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import style from './dashboard.module.css';
 import { DEFAULT_ITEMS } from '../../const/items';
+import { useAuth } from '../../hook/use-auth';
 
 const { Header, Content } = Layout;
 
