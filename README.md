@@ -32,7 +32,7 @@ npm install
 npm run dev
 ```
 
-- После этого приложение будет доступно по адресу: [http://localhost:5173](http://localhost:5173)
+- После этого приложение будет доступно по адресу: [http://localhost:5173/register](http://localhost:5173/register)
 
 ### ⚡ Используемые технологии
 

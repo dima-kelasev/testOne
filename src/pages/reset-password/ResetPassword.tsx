@@ -1,16 +1,16 @@
 import { Card, Button, Input, Typography, message } from 'antd';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
+import { resetPasswordValidationSchema } from '../../helpers/validationSchemas';
+import { getResetToken } from '../../helpers/get-reset-token';
+import style from './reset-password.module.css';
 
 const { Text } = Typography;
 
-const validationSchema = Yup.object({
-  email: Yup.string().email('Некорректный email').required('Введите email'),
-});
-
 const ResetPassword = () => {
   const navigate = useNavigate();
+
+  const goToLoginPage = () => navigate('/login');
 
   const onSubmit = (
     values: { email: string },
@@ -25,7 +25,8 @@ const ResetPassword = () => {
       return;
     }
 
-    const resetToken = Math.random().toString(36).substr(2);
+    const resetToken = getResetToken();
+
     localStorage.setItem(
       'resetToken',
       JSON.stringify({ email: values.email, token: resetToken })
@@ -39,19 +40,11 @@ const ResetPassword = () => {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        width: '100vw',
-      }}
-    >
+    <div className={style.resetPasswordContainer}>
       <Card title="Сброс пароля" style={{ width: 350, textAlign: 'center' }}>
         <Formik
           initialValues={{ email: '' }}
-          validationSchema={validationSchema}
+          validationSchema={resetPasswordValidationSchema}
           onSubmit={onSubmit}
         >
           {({ isSubmitting }) => (
@@ -79,7 +72,7 @@ const ResetPassword = () => {
               <div style={{ marginTop: 15 }}>
                 <Text
                   type="secondary"
-                  onClick={() => navigate('/login')}
+                  onClick={goToLoginPage}
                   style={{ cursor: 'pointer' }}
                 >
                   Вернуться ко входу

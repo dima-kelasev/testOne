@@ -1,19 +1,16 @@
 import { Card, Button, Input, Typography, message } from 'antd';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 import { useNavigate, useParams } from 'react-router-dom';
+import { setNewPasswordValidationSchema } from '../../helpers/validationSchemas';
+import style from './new-password-page.module.css';
 
 const { Text } = Typography;
-
-const validationSchema = Yup.object({
-  password: Yup.string()
-    .min(6, 'Минимум 6 символов')
-    .required('Введите новый пароль'),
-});
 
 const NewPasswordPage = () => {
   const navigate = useNavigate();
   const { token } = useParams<{ token: string }>();
+
+  const goToLoginPage = () => navigate('/login');
 
   const onSubmit = (
     values: { password: string },
@@ -46,22 +43,14 @@ const NewPasswordPage = () => {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        width: '100vw',
-      }}
-    >
+    <div className={style.newPasswordContainer}>
       <Card
         title="Установка нового пароля"
         style={{ width: 350, textAlign: 'center' }}
       >
         <Formik
           initialValues={{ password: '' }}
-          validationSchema={validationSchema}
+          validationSchema={setNewPasswordValidationSchema}
           onSubmit={onSubmit}
         >
           {({ isSubmitting }) => (
@@ -89,7 +78,7 @@ const NewPasswordPage = () => {
               <div style={{ marginTop: 15 }}>
                 <Text
                   type="secondary"
-                  onClick={() => navigate('/login')}
+                  onClick={goToLoginPage}
                   style={{ cursor: 'pointer' }}
                 >
                   Вернуться ко входу

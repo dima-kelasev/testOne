@@ -1,0 +1,12 @@
+.DashboardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.DashboardContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 64px);
+}

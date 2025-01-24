@@ -1,7 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Layout, Menu, Button } from 'antd';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import style from './dashboard.module.css';
+import { DEFAULT_ITEMS } from '../../const/items';
 
 const { Header, Content } = Layout;
 
@@ -9,44 +12,31 @@ const Dashboard = () => {
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
 
+  const goToLoginPage = () => navigate('/login');
+
+  const logOutHandle = () => {
+    logout();
+    goToLoginPage();
+  };
+
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login');
+      goToLoginPage();
     }
   }, [isAuthenticated, navigate]);
 
   return (
     <Layout style={{ height: '100vh', width: '100vw' }}>
-      <Header
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
+      <Header className={style.DashboardHeader}>
         <Menu
           theme="dark"
           mode="horizontal"
           defaultSelectedKeys={['1']}
-          items={[{ key: '1', label: 'Главная' }]}
+          items={DEFAULT_ITEMS}
         />
-        <Button
-          onClick={() => {
-            logout();
-            navigate('/login');
-          }}
-        >
-          Выйти
-        </Button>
+        <Button onClick={logOutHandle}>Выйти</Button>
       </Header>
-      <Content
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: 'calc(100vh - 64px)',
-        }}
-      >
+      <Content className={style.DashboardContent}>
         <h2>Добро пожаловать в систему!</h2>
       </Content>
     </Layout>

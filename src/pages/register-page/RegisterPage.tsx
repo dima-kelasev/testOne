@@ -1,19 +1,15 @@
 import { Card, Button, Input, Typography, message } from 'antd';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
+import { formValidationSchema } from '../../helpers/validationSchemas';
+import style from './register-page.module.css';
 
 const { Text } = Typography;
 
-const validationSchema = Yup.object({
-  email: Yup.string().email('Некорректный email').required('Введите email'),
-  password: Yup.string()
-    .min(6, 'Минимум 6 символов')
-    .required('Введите пароль'),
-});
-
 const RegisterPage = () => {
   const navigate = useNavigate();
+
+  const goToLoginPage = () => navigate('/login');
 
   const onSubmit = (
     values: { email: string; password: string },
@@ -35,19 +31,11 @@ const RegisterPage = () => {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        width: '100vw',
-      }}
-    >
+    <div className={style.registerPageContainer}>
       <Card title="Регистрация" style={{ width: 350, textAlign: 'center' }}>
         <Formik
           initialValues={{ email: '', password: '' }}
-          validationSchema={validationSchema}
+          validationSchema={formValidationSchema}
           onSubmit={onSubmit}
         >
           {({ isSubmitting }) => (
@@ -89,7 +77,7 @@ const RegisterPage = () => {
               <Button
                 type="default"
                 block
-                onClick={() => navigate('/login')}
+                onClick={goToLoginPage}
                 style={{ marginTop: 5 }}
               >
                 Войти

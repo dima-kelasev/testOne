@@ -1,15 +1,9 @@
 import { Card, Button, Input } from 'antd';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
-import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-
-const validationSchema = Yup.object({
-  email: Yup.string().email('Некорректный email').required('Введите email'),
-  password: Yup.string()
-    .min(6, 'Минимум 6 символов')
-    .required('Введите пароль'),
-});
+import style from './login-page.module.css';
+import { formValidationSchema } from '../../helpers/validationSchemas';
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -34,19 +28,11 @@ const LoginPage = () => {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        width: '100vw',
-      }}
-    >
+    <div className={style.logInContainer}>
       <Card title="Вход в систему" style={{ width: 350, textAlign: 'center' }}>
         <Formik
           initialValues={{ email: '', password: '' }}
-          validationSchema={validationSchema}
+          validationSchema={formValidationSchema}
           onSubmit={onSubmit}
         >
           {({ isSubmitting }) => (
@@ -81,9 +67,9 @@ const LoginPage = () => {
                 Войти
               </Button>
 
-              <div style={{ textAlign: 'right', marginBottom: 10 }}>
+              <div className={style.resetBtn}>
                 <span
-                  style={{ color: '#1890ff', cursor: 'pointer' }}
+                  className={style.resetText}
                   onClick={() => navigate('/reset-password')}
                 >
                   Забыли пароль?

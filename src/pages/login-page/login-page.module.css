@@ -1,0 +1,17 @@
+.logInContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.resetBtn {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.resetText {
+  color: #1890ff;
+  cursor: pointer;
+}
