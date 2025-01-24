@@ -82,12 +82,10 @@ const RegisterPage = () => {
                 Зарегистрироваться
               </Button>
 
-              {/* Сноска */}
               <div style={{ marginTop: 15 }}>
                 <Text type="secondary">Уже есть аккаунт?</Text>
               </div>
 
-              {/* Кнопка входа */}
               <Button
                 type="default"
                 block

@@ -1,50 +1,54 @@
-# React + TypeScript + Vite
+# 🚀 React + Ant Design Authentication App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Описание проекта
 
-Currently, two official plugins are available:
+Это небольшое React-приложение, реализующее систему аутентификации с использованием **Ant Design**, **Formik**, **Yup** и **React Router**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🔧 Функционал
 
-## Expanding the ESLint configuration
+✅ Регистрация новых пользователей (с сохранением в `localStorage`)  
+✅ Вход в систему с проверкой логина и пароля  
+✅ Защита маршрутов (доступ к `Dashboard` только после авторизации)  
+✅ Автоматический выход при обновлении страницы, если нет токена  
+✅ Центрированный интерфейс, удобный для пользователя  
+✅ Валидация форм с `Formik` + `Yup`  
+✅ Лоадер (`Spin` из Ant Design) при проверке авторизации
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+---
 
-- Configure the top-level `parserOptions` property like this:
+## 📦 Установка и запуск
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### 1️⃣ Установка зависимостей
+
+```sh
+npm install
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### 2️⃣ Запуск проекта
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```sh
+npm run dev
 ```
+
+### ⚡ Используемые технологии
+
+React + TypeScript (Функциональные компоненты + хуки)
+Vite (Быстрая сборка)
+Ant Design (UI-библиотека)
+React Router (Маршрутизация)
+Formik + Yup (Формы + валидация)
+
+### 📜 Использование
+
+# 🔹 Регистрация
+
+Перейти на /register
+Ввести email и пароль
+Нажать "Зарегистрироваться"
+
+# 🔹 Вход в систему
+
+Перейти на /login
+Ввести email и пароль
+Нажать "Войти"
+Если данные корректны, редирект на /dashboard
