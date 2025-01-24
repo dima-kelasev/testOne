@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { formValidationSchema } from '../../helpers/validationSchemas';
-import bcrypt from 'bcryptjs';
+import { compare } from 'bcrypt-ts';
 import style from './login-page.module.css';
 import LocalStorageService from '../../services/local-storage-service';
 
@@ -26,10 +26,7 @@ const LoginPage = () => {
       return;
     }
 
-    const isPasswordCorrect = await bcrypt.compare(
-      values.password,
-      user.password
-    );
+    const isPasswordCorrect = await compare(values.password, user.password);
     if (!isPasswordCorrect) {
       setFieldError('password', 'Неверный email или пароль');
       setSubmitting(false);

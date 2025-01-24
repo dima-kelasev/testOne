@@ -2,7 +2,7 @@ import { Card, Button, Input, Typography, message } from 'antd';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useNavigate, useParams } from 'react-router-dom';
 import { setNewPasswordValidationSchema } from '../../helpers/validationSchemas';
-import bcrypt from 'bcryptjs';
+import { hash } from 'bcrypt-ts';
 import style from './new-password-page.module.css';
 
 const { Text } = Typography;
@@ -25,7 +25,7 @@ const NewPasswordPage = () => {
 
     const users = JSON.parse(localStorage.getItem('users') || '[]');
 
-    const hashedPassword = await bcrypt.hash(values.password, 10);
+    const hashedPassword = await hash(values.password, 10);
 
     const updatedUsers = users.map(
       (user: { email: string; password: string }) =>
