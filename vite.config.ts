@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
-  plugins: [react(), commonjs()],
+  plugins: [react()],
 
   resolve: {
     alias: {
@@ -26,6 +26,3 @@ export default defineConfig({
 
   envDir: './config',
 });
-function commonjs(): import('vite').PluginOption {
-  throw new Error('Function not implemented.');
-}
