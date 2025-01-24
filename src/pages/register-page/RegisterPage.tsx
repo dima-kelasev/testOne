@@ -2,7 +2,7 @@ import { Card, Button, Input, Typography, message } from 'antd';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { formValidationSchema } from '../../helpers/validationSchemas';
-import bcrypt from 'bcryptjs';
+import { hash } from 'bcrypt-ts';
 import style from './register-page.module.css';
 import LocalStorageService from '../../services/local-storage-service';
 
@@ -22,7 +22,7 @@ const RegisterPage = () => {
       return;
     }
 
-    const hashedPassword = await bcrypt.hash(values.password, 10);
+    const hashedPassword = await hash(values.password, 10);
     LocalStorageService.addUser(values.email, hashedPassword);
 
     message.success('Регистрация успешна! Теперь войдите в систему.');
