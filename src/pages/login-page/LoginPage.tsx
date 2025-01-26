@@ -1,11 +1,11 @@
 import { Card, Button, Input } from 'antd';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
 import { formValidationSchema } from '../../helpers/validationSchemas';
 import { compare } from 'bcrypt-ts';
 import style from './login-page.module.css';
 import LocalStorageService from '../../services/local-storage-service';
+import { useAuth } from '../../hook/use-auth';
 
 const LoginPage = () => {
   const { login } = useAuth();

@@ -3,3 +3,11 @@
   font-size: 12px;
   margin-top: 4px;
 }
+
+.spinStyle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
